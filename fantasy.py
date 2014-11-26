@@ -8,6 +8,26 @@ class fantasy_league(object):
         centers = Set()
         person_to_value = {}
         person_to_price = {}
+        
+        coaches_reader = open(coaches_file,"w")
+        for line in coaches_reader:
+            line.split(',')
+            coaches.add(line[0])
+            person_to_value[line[0]] = float(line[2])
+            person_to_price[line[0]] = float(line[3])
+
+        players_reader = open(players_file,"w")
+        for line in players_reader:
+            line.split(',')
+            person_to_value[line[0]] = float(line[2])
+            person_to_price[line[0]] = float(line[3])
+            
+            if line[1] = 'guard':
+                guards.add(line[0])
+            if line[1] = 'center':
+                centers.add(line[0])
+            if line[1] = 'forward':
+                forwards.add(line[0])
 
         def find_value(self):    
             for coach in coaches:
