@@ -12,22 +12,23 @@ class fantasy_league(object):
         coaches_reader = open(coaches_file,"w")
         for line in coaches_reader:
             line.split(',')
-            coaches.add(line[0])
-            person_to_value[line[0]] = float(line[2])
-            person_to_price[line[0]] = float(line[3])
+            coaches.add(line[4])
+            person_to_value[line[4]] = float(line[1])
+            person_to_price[line[4]] = float(line[0])
 
         players_reader = open(players_file,"w")
         for line in players_reader:
             line.split(',')
-            person_to_value[line[0]] = float(line[2])
-            person_to_price[line[0]] = float(line[3])
+            player = line[4]
+            person_to_value[player]] = float(1)
+            person_to_price[player] = float(0)
             
-            if line[1] = 'guard':
-                guards.add(line[0])
-            if line[1] = 'center':
-                centers.add(line[0])
-            if line[1] = 'forward':
-                forwards.add(line[0])
+            if line[2] = 'guard':
+                guards.add(player)
+            if line[2] = 'center':
+                centers.add(player)
+            if line[2] = 'forward':
+                forwards.add(player)
 
         def find_value(self):    
             for coach in coaches:
