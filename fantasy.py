@@ -35,6 +35,7 @@ class fantasy_league(object):
     def find_value(self):    
         cur_set = Set()
         cur_value = 0 
+        index = 0 
         for coach in self.coaches:
             for forward_one in self.forwards:
                 for forward_two in self.forwards:
@@ -46,6 +47,12 @@ class fantasy_league(object):
                                         for center_two in self.centers:
                                             price = self.calculate_price(coach,forward_one, forward_two, forward_three, guard_one,guard_two, guard_three, center_one, center_two)
                                             value = self.calculate_value(coach,forward_one, forward_two, forward_three, guard_one,guard_two, guard_three, center_one, center_two)
+
+                                            if index % 10000000 == 0:
+                                                print index, len(self.coaches)*len(self.forwards)*len(self.forwards)*len(self.forwards)*len(self.guards)*len(self.guards)*len(self.guards)*len(self.centers)*len(self.centers)
+                                            
+                                            index = index + 1 
+
                                             if price < 451:
                                                 if value > cur_value:
                                                     cur_value = value
