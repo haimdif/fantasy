@@ -11,29 +11,29 @@ class fantasy_league(object):
         self.person_to_price = {}
         
         coaches_reader = open(coaches_file,"r")
-        print coaches_file
         for line in coaches_reader:
-            line.split(',')
-            self.coaches.add(line[4])
-            self.person_to_value[line[4]] = float(line[1])
-            self.person_to_price[line[4]] = float(line[0])
+            split_line = line.split(',')
+            person = int(split_line[3])
+            self.coaches.add(person)
+            self.person_to_value[person] = float(split_line[1])
+            self.person_to_price[person] = float(split_line[0])
 
         players_reader = open(players_file,"r")
         for line in players_reader:
-            line.split(',')
-            player = line[4]
-            self.person_to_value[player] = float(1)
-            self.person_to_price[player] = float(0)
+            split_line = line.split(',')
+            player = int(split_line[3])
+            self.person_to_value[player] = float(split_line[1])
+            self.person_to_price[player] = float(split_line[0])
             
-            if line[2] == 'guard':
+            if split_line[2] == 'guard':
                 self.guards.add(player)
-            if line[2] == 'center':
+            if split_line[2] == 'center':
                 self.centers.add(player)
-            if line[2] == 'forward':
+            if split_line[2] == 'forward':
                 self.forwards.add(player)
 
     def find_value(self):    
-        cur_list = []
+        cur_set = Set()
         cur_value = 0 
         for coach in self.coaches:
             for forward_one in self.forwards:
@@ -44,12 +44,12 @@ class fantasy_league(object):
                                 for guard_three in self.guards:
                                     for center_one in self.centers:
                                         for center_two in self.centers:
-                                            price = calculate_price(self,coach,forward_one, forward_two, forward_three, guard_one,guard_two, guard_three, center_one, center_two)
-                                            value = calculate_value(self,coach,forward_one, forward_two, forward_three, guard_one,guard_two, guard_three, center_one, center_two)
-                                            if price < 450:
+                                            price = self.calculate_price(coach,forward_one, forward_two, forward_three, guard_one,guard_two, guard_three, center_one, center_two)
+                                            value = self.calculate_value(coach,forward_one, forward_two, forward_three, guard_one,guard_two, guard_three, center_one, center_two)
+                                            if price < 451:
                                                 if value > cur_value:
                                                     cur_value = value
-                                                    cur_list = []
+                                                    cur_list = Set()
                                                     cur_list.add(coach)
                                                     cur_list.add(forward_one)
                                                     cur_list.add(forward_two)
