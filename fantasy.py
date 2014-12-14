@@ -17,8 +17,7 @@ class fantasy_league(object):
             person = int(split_line[3])
             self.coaches.add(person)
             self.person_to_value[person] = float(split_line[1])
-            self.person_to_price[person] = float(split_line[0])                                              # 1010101000
-#            self.items.append( (person,int(self.person_to_price[person])+1000 , self.person_to_value[person] +1000000000) )
+            self.person_to_price[person] = float(split_line[0])                 #            self.items.append( (person,int(self.person_to_price[person])+1000 , self.person_to_value[person] +1000) )
             
         players_reader = open(players_file,"r")
         for line in players_reader:
@@ -27,7 +26,7 @@ class fantasy_league(object):
             self.person_to_value[player] = float(split_line[1])
             self.person_to_price[player] = float(split_line[0])
 
-            
+            self.items.append( (player,int(self.person_to_price[player])+1000 ,self.person_to_value[player] + 1000) )
             
             if split_line[2] == 'guard':
                 self.guards.add(player)
@@ -35,35 +34,6 @@ class fantasy_league(object):
                 self.centers.add(player)
             if split_line[2] == 'forward':
                 self.forwards.add(player)
-                
-        guard_set = Set()        
-        for guard_one in self.guards:
-            for guard_two in self.guards:
-                for guard_three in self.guards:
-                        guard_set.add( (guard_one,guard_two,guard_three) )
-                        
-        centers_set = Set()
-        for center_one in self.centers:
-            for center_two in self.centers:
-                centers_set.add( (center_one,center_two ) )
-                
-        forwards_set = Set()
-        for forward_one in self.forwards:
-            for forward_two in self.forwards:
-                for forward_three in self.forwards:
-                    forwards_set.add( (forward_one, forward_two, forward_three) )
-        
-        for guard in guard_set:                                                                                                                    # 1010101000     
-            self.items.append( ( guard, int(self.person_to_price[guard[0]] + self.person_to_price[guard[1]]  + self.person_to_price[guard[2]])+1000, 
-            1000  +self.person_to_value[guard[0]] + self.person_to_value[guard[1]]  + self.person_to_value[guard[2]] ))
-            
-        for forward in forwards_set:
-            self.items.append( ( forward, int(self.person_to_price[forward[0]] + self.person_to_price[forward[1]]  + self.person_to_price[forward[2]])+1000, 1000  +self.person_to_value[forward[0]] + self.person_to_value[forward[1]] + self.person_to_value[forward[2]] ))
-
-        for center in centers_set:                                                                                   # 1010101000
-            self.items.append( ( center, int(self.person_to_price[center[0]] + self.person_to_price[center[1]])+1000, 1000  +self.person_to_value[center[0]] + self.person_to_value[center[1]] ))
-
-#        self.items.append( (player,int(self.person_to_price[player])+1000 ,self.person_to_value[player] +1000) )
         
     def find_value(self):    
         cur_set = Set()
@@ -112,7 +82,8 @@ class fantasy_league(object):
     def knapsack01_dp(self, limit):
         items = self.items
         table = [[0 for w in range(limit + 1)] for j in xrange(len(items) + 1)]
- 
+        centers = [[0 for w in range(limit + 1)] for j in xrange(len(items) + 1)]
+
         for j in xrange(1, len(items) + 1):
             item, wt, val = items[j-1]
             for w in xrange(1, limit + 1):
@@ -120,7 +91,8 @@ class fantasy_league(object):
                     table[j][w] = table[j-1][w]
                 else:
                     table[j][w] = max(table[j-1][w], table[j-1][w-wt] + val)
- 
+                    
+        print table 
         result = []
         w = limit
         for j in range(len(items), 0, -1):
@@ -141,6 +113,5 @@ class fantasy_league(object):
 cur_fantasy = fantasy_league('f_coaches_analyzed.csv','f_players_processed.csv')
 
 #cur_fantasy.find_value()
-                              # 1010101000
 print cur_fantasy.knapsack01_dp(8420)
 
